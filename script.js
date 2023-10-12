@@ -11,7 +11,7 @@ let highestScore = localStorage.getItem("highestScore") || 0;
 function main(currentTime) {
   if (gameOver) {
     if (confirm("You Lost. Press OK to restart")) {
-      window.location = "/";
+      window.location = "/SnakeGame";
     }
 
     return;
