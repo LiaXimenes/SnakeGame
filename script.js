@@ -1,7 +1,12 @@
 //GAME
+const board = document.getElementById("board");
+const scoreElement = document.getElementById("score");
+const highestScoreElement = document.getElementById("highestscore");
+
 let lastRenderTime = 0;
 let gameOver = false;
-const board = document.getElementById("board");
+let score = 0;
+let highestScore = localStorage.getItem("highestScore") || 0;
 
 function main(currentTime) {
   if (gameOver) {
@@ -50,7 +55,7 @@ function outsideBoard(snakePosition) {
 
 //SNAKE
 const SNAKE_SPEED = 5;
-const snakeBody = [{ x: 15, y: 15 }];
+const snakeBody = [{ x: 12, y: 12 }];
 let newSegments = 0;
 
 function updateSnake() {
@@ -76,6 +81,9 @@ function drawSnake(board) {
 
 function expandSnake(amount) {
   newSegments += amount;
+  score = score + 1;
+  highestScore = score >= highestScore ? score : highestScore;
+  localStorage.setItem("highestScore", highestScore);
 }
 
 function onSnake(position, { ignoreHead = false } = {}) {
@@ -89,7 +97,8 @@ function addSegment() {
   for (let i = 0; i < newSegments; i++) {
     snakeBody.push({ ...snakeBody[snakeBody.length - 1] });
   }
-
+  scoreElement.innerText = `Score: ${score}`;
+  highestScoreElement.innerText = `Highest Score: ${highestScore} `;
   newSegments = 0;
 }
 
@@ -133,7 +142,7 @@ function getDirection() {
 
 //FOOD
 const EXPANSION = 1;
-const BOARD_SIZE = 30;
+const BOARD_SIZE = 25;
 let food = getRandomFoodPosition();
 
 function updateFood() {
